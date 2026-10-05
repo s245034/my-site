@@ -1,16 +1,74 @@
-# React + Vite
+# my-site
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+なましかの自己紹介・ポートフォリオサイトです。
+気になる技術を試す場としても使っています。
 
-Currently, two official plugins are available:
+**公開 URL:** https://my-site-sage-phi.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 主な内容
 
-## React Compiler
+| セクション | 内容 |
+| --- | --- |
+| About | 自己紹介 |
+| Likes | 趣味・好きなこと |
+| Works | 作品一覧（GitHub・公開ページへのリンク付き） |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 使用技術
 
-## Expanding the ESLint configuration
+- [React](https://react.dev/) 19
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vite.dev/)
+- CSS（ライブラリなし）
+- [ESLint](https://eslint.org/) + [typescript-eslint](https://typescript-eslint.io/)
+- ホスティング: [Vercel](https://vercel.com/)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 動作環境
+
+- Node.js 22 以上（開発時は v22.16.0 を使用）
+- npm
+
+## セットアップ
+
+```powershell
+git clone https://github.com/s245034/my-site.git
+cd my-site
+npm install
+```
+
+## コマンド
+
+| コマンド | 内容 |
+| --- | --- |
+| `npm run dev` | 開発サーバーを起動（http://localhost:5173） |
+| `npm run build` | 型チェックをしてから本番用にビルド（`dist/` に出力） |
+| `npm run preview` | ビルド結果をローカルで確認 |
+| `npm run lint` | ESLint でコードをチェック |
+
+## ディレクトリ構成
+
+```
+my-site/
+├── public/            # そのまま配信される静的ファイル（favicon など）
+├── src/
+│   ├── App.tsx        # ページ本体（自己紹介・趣味・作品のデータもここ）
+│   ├── App.css        # ページのスタイル
+│   ├── index.css      # サイト全体の共通スタイル・色の設定
+│   └── main.tsx       # エントリーポイント
+├── index.html
+├── vite.config.ts
+└── tsconfig*.json     # TypeScript の設定
+```
+
+## コンテンツの更新方法
+
+- **趣味を追加する**：`src/App.tsx` の `likes` 配列に1件追加する
+- **作品を追加する**：`src/App.tsx` の `works` 配列に1件追加する
+- **色を変える**：`src/index.css` の `:root` にある変数（`--blue` など）を変更する
+
+## デプロイ
+
+`main` ブランチに push すると、Vercel が自動でビルドして公開します。
+
+## 作者
+
+なましか — [GitHub](https://github.com/s245034)
