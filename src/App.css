@@ -1,0 +1,110 @@
+/* ---------- Hero（一番上の大きな見出し部分） ---------- */
+.hero {
+  padding: 120px 24px 96px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--blue-light) 0%, var(--bg) 100%);
+}
+
+.hero-label {
+  color: var(--blue);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.hero-name {
+  margin: 8px 0 16px;
+  font-size: 56px;
+  letter-spacing: 0.05em;
+}
+
+.hero-lead {
+  color: var(--text-sub);
+  font-size: 18px;
+}
+
+/* ---------- 本文の共通レイアウト ---------- */
+.container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: 56px 0;
+}
+
+/* 見出しの左に青い線を付ける */
+.section-title {
+  margin-bottom: 24px;
+  padding-left: 12px;
+  border-left: 4px solid var(--blue);
+  font-size: 28px;
+}
+
+/* ---------- カード ---------- */
+/* grid で横に並べる。画面幅に合わせて列数が自動で変わる */
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue);
+}
+
+.card-emoji {
+  font-size: 32px;
+}
+
+.card-title {
+  margin: 8px 0;
+  color: var(--blue-dark);
+  font-size: 18px;
+}
+
+.card-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  color: var(--text-sub);
+  box-shadow: none;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  margin-top: 40px;
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--text-sub);
+  font-size: 14px;
+  border-top: 1px solid var(--border);
+}
+
+/* ---------- スマホ向け ---------- */
+@media (max-width: 600px) {
+  .hero {
+    padding: 80px 20px 64px;
+  }
+
+  .hero-name {
+    font-size: 40px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+}

@@ -1,0 +1,45 @@
+/* サイト全体で使う色や文字の設定。色はここの変数を変えるだけで全体に反映される */
+:root {
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+  --blue-dark: #1e3a8a;
+  --text: #334155;
+  --text-h: #0f172a;
+  --text-sub: #64748b;
+  --bg: #ffffff;
+  --border: #e2e8f0;
+  --shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+
+  --sans: 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic UI', sans-serif;
+
+  font: 16px/1.8 var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--text-h);
+  line-height: 1.3;
+}
