@@ -7,11 +7,34 @@ type Like = {
   text: string
 }
 
-// TODO: 仮の内容。自分の趣味・好きなことに書き換える
 const likes: Like[] = [
-  { emoji: '💻', title: 'プログラミング', text: '気になる技術を触って、小さく作ってみるのが好き。' },
-  { emoji: '🎮', title: 'ゲーム', text: 'ここに好きなゲームのジャンルやタイトルを書く。' },
-  { emoji: '🎧', title: '音楽', text: 'ここに好きなアーティストやジャンルを書く。' },
+  { emoji: '🎧', title: '音楽', text: 'ヨルシカが好きです。' },
+  { emoji: '📷', title: 'カメラ', text: '写真を撮るのが好きです。' },
+]
+
+// 作品1件分の形。links は「表示名と URL」の組をいくつでも持てる
+type Work = {
+  title: string
+  text: string
+  links: { label: string; url: string }[]
+}
+
+const GITHUB_URL = 'https://github.com/s245034'
+
+const works: Work[] = [
+  {
+    title: 'my-site',
+    text: 'このサイト。React + TypeScript + Vite で作成し、Vercel で公開しています。',
+    links: [{ label: 'GitHub', url: `${GITHUB_URL}/my-site` }],
+  },
+  {
+    title: 'holo-journal',
+    text: '気分の記録や書く習慣づくりができる日記アプリ。Lovable で作成。',
+    links: [
+      { label: 'Site', url: 'https://holo-daily-spark.lovable.app/' },
+      { label: 'GitHub', url: `${GITHUB_URL}/holo-journal` },
+    ],
+  },
 ]
 
 function App() {
@@ -50,10 +73,19 @@ function App() {
         <section className="section">
           <h2 className="section-title">Works</h2>
           <ul className="card-list">
-            <li className="card">
-              <h3 className="card-title">my-site</h3>
-              <p>このサイト。React + TypeScript + Vite で作成。</p>
-            </li>
+            {works.map((work) => (
+              <li key={work.title} className="card">
+                <h3 className="card-title">{work.title}</h3>
+                <p>{work.text}</p>
+                <div className="card-links">
+                  {work.links.map((link) => (
+                    <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer">
+                      {link.label} ↗
+                    </a>
+                  ))}
+                </div>
+              </li>
+            ))}
             <li className="card card-placeholder">
               <p>Coming soon...</p>
             </li>
@@ -62,6 +94,9 @@ function App() {
       </main>
 
       <footer className="footer">
+        <a className="footer-link" href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+          GitHub ↗
+        </a>
         <p>© 2026 なましか</p>
       </footer>
     </>

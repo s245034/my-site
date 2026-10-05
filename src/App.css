@@ -75,6 +75,24 @@
   font-size: 18px;
 }
 
+.card-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.card-links a,
+.footer-link {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.card-links a:hover,
+.footer-link:hover {
+  text-decoration: underline;
+}
+
 .card-placeholder {
   display: flex;
   align-items: center;
@@ -92,6 +110,11 @@
   color: var(--text-sub);
   font-size: 14px;
   border-top: 1px solid var(--border);
+}
+
+.footer-link {
+  display: inline-block;
+  margin-bottom: 8px;
 }
 
 /* ---------- スマホ向け ---------- */
