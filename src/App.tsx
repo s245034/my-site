@@ -25,15 +25,15 @@ const works: Work[] = [
   {
     title: 'my-site',
     text: 'このサイト。React + TypeScript + Vite で作成し、Vercel で公開しています。',
-    links: [
-      { label: 'Site', url: 'https://my-site-sage-phi.vercel.app/' },
-      { label: 'GitHub', url: `${GITHUB_URL}/my-site` },
-    ],
+    links: [{ label: 'GitHub', url: `${GITHUB_URL}/my-site` }],
   },
   {
     title: 'holo-journal',
     text: '気分の記録や書く習慣づくりができる日記アプリ。Lovable で作成。',
-    links: [{ label: 'GitHub', url: `${GITHUB_URL}/holo-journal` }],
+    links: [
+      { label: 'Site', url: 'https://holo-daily-spark.lovable.app/' },
+      { label: 'GitHub', url: `${GITHUB_URL}/holo-journal` },
+    ],
   },
 ]
 
