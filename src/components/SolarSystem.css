@@ -1,0 +1,107 @@
+.solar-lead {
+  margin-bottom: 20px;
+  color: var(--text-sub);
+}
+
+/* ---------- 一時停止ボタン ---------- */
+.solar-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.solar-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 20px;
+  border: 2px solid var(--blue);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--blue);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.solar-button:hover {
+  background: var(--blue-light);
+}
+
+/* ---------- キャンバス ---------- */
+.solar-canvas-wrap {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.solar-canvas {
+  display: block;
+  cursor: pointer;
+  /* touch-action は既定（auto）のまま。キャンバス上でもページを普通にスクロールできる */
+}
+
+/* ---------- 選択結果のメッセージ ---------- */
+.solar-message {
+  min-height: 3.6em; /* 文字が出たときにレイアウトがずれないよう、高さを確保しておく */
+  padding: 12px 0;
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.solar-message a {
+  color: var(--blue);
+}
+
+/* ---------- 作品一覧（普通の入り口） ---------- */
+.solar-list-title {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.solar-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.solar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px; /* WCAG 2.5.8 の 24px を十分に超える大きさ */
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.solar-item:hover {
+  border-color: var(--blue);
+}
+
+/* 準備中は文字でも伝えたうえで、見た目も控えめにする */
+.solar-item-empty {
+  border-style: dashed;
+  color: var(--text-sub);
+  font-weight: 400;
+}
+
+.solar-dot {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 2px dashed transparent;
+  border-radius: 50%;
+}

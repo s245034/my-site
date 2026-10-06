@@ -15,8 +15,42 @@
   font: 16px/1.8 var(--sans);
   color: var(--text);
   background: var(--bg);
-  color-scheme: light;
+  color-scheme: light dark;
   -webkit-font-smoothing: antialiased;
+}
+
+/* OS がダークモードのときは、変数の値だけを差し替える */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --blue: #60a5fa;
+    --blue-light: #0f1d3a;
+    --blue-dark: #bfdbfe;
+    --text: #cbd5e1;
+    --text-h: #f1f5f9;
+    --text-sub: #94a3b8;
+    --bg: #0b1120;
+    --border: #1e293b;
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* キーボードで操作しているときだけ、はっきりした枠を出す */
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+
+/* 画面には出さず、スクリーンリーダーだけに読ませる文字 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 *,
