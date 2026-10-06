@@ -41,67 +41,6 @@
   font-size: 28px;
 }
 
-/* ---------- カード ---------- */
-/* grid で横に並べる。画面幅に合わせて列数が自動で変わる */
-.card-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
-  padding: 0;
-  list-style: none;
-}
-
-.card {
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--bg);
-  box-shadow: var(--shadow);
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  border-color: var(--blue);
-}
-
-.card-emoji {
-  font-size: 32px;
-}
-
-.card-title {
-  margin: 8px 0;
-  color: var(--blue-dark);
-  font-size: 18px;
-}
-
-.card-links {
-  display: flex;
-  gap: 16px;
-  margin-top: 16px;
-}
-
-.card-links a,
-.footer-link {
-  color: var(--blue);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.card-links a:hover,
-.footer-link:hover {
-  text-decoration: underline;
-}
-
-.card-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-style: dashed;
-  color: var(--text-sub);
-  box-shadow: none;
-}
-
 /* ---------- Footer ---------- */
 .footer {
   margin-top: 40px;
@@ -115,6 +54,13 @@
 .footer-link {
   display: inline-block;
   margin-bottom: 8px;
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
 }
 
 /* ---------- スマホ向け ---------- */
