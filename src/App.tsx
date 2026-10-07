@@ -7,10 +7,8 @@ function App() {
   return (
     <>
       <header className="hero">
-        <p className="hero-label">Hello, I'm</p>
         <h1 className="hero-name">なましか</h1>
-        {/* TODO: 仮の一言紹介。自分の言葉に書き換える */}
-        <p className="hero-lead">気になる技術を、作りながら学んでいます。</p>
+        <p className="hero-lead">React と TypeScript で Web アプリを作っています</p>
       </header>
 
       <main className="container">
