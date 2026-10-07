@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { planets } from '../data/planets'
+import { Link } from 'react-router'
+import { planets, SUN_COLOR } from '../data/planets'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import './SolarSystem.css'
 
@@ -18,7 +19,6 @@ const DAMPING = 0.86 // 減衰
 
 // ---------- 見た目の設定 ----------
 const SUN_RADIUS = 16
-const SUN_COLOR = '#EF9F27'
 const EMPTY_ALPHA = 0.22 // 作品がない惑星の不透明度
 const RING_FRAMES = 70 // 選択時の輪を表示するフレーム数
 const LAYOUT_RADIUS = 220 // 太陽系全体の半径（一番外の軌道 200px + 余白）。これが入りきらない画面では縮小する
@@ -29,11 +29,14 @@ const TAP_MARGIN = 20 // タッチは指が太いので、さらに広く取る
 // 各惑星の「今の状態」。React の state ではなく、毎フレーム書き換える普通の変数として持つ
 type Body = { angle: number; x: number; y: number; vx: number; vy: number }
 
+// 選べるもの。惑星は planets の番号、太陽（＝自己紹介）は 'sun'
+type Target = number | 'sun'
+
 // コンポーネントの外（ボタンや一覧）からキャンバスを操作するための関数
 type Controls = {
   setMotion: (motion: boolean) => void
   resetToInitial: () => void
-  highlight: (index: number) => void
+  highlight: (target: Target) => void
 }
 
 // 「ユーザーが選んだ一時停止状態」と、そのときの reduced-motion の値をセットで覚える
@@ -44,7 +47,7 @@ const clamp = (value: number, min: number, max: number) => Math.min(Math.max(val
 function SolarSystem() {
   const reducedMotion = usePrefersReducedMotion()
   const [pauseChoice, setPauseChoice] = useState<PauseChoice | null>(null)
-  const [selected, setSelected] = useState<number | null>(null)
+  const [selected, setSelected] = useState<Target | null>(null)
 
   // ボタンを押していなければ reduced-motion の設定に従う。
   // OS の設定が変わったら、以前のボタン操作は無視して新しい設定を優先する
@@ -82,7 +85,7 @@ function SolarSystem() {
     let pointer: { x: number; y: number } | null = null // 太陽を原点にしたカーソル位置
     let prevPointer: { x: number; y: number } | null = null
     let speed = 0
-    let ring: { index: number; frames: number } | null = null
+    let ring: { target: Target; frames: number } | null = null
     let rafId = 0
     let pageVisible = !document.hidden
     let onScreen = true
@@ -211,14 +214,17 @@ function SolarSystem() {
 
       // 選択した惑星の周りの輪。動きが止まっているときは広がらず、そのまま表示するだけ
       if (ring) {
-        const planet = planets[ring.index]
+        // 太陽なら中心（太陽からの距離 0）、惑星ならその惑星の位置に輪を出す
+        const { target } = ring
+        const body = target === 'sun' ? { x: 0, y: 0 } : bodies[target]
+        const size = target === 'sun' ? SUN_RADIUS : planets[target].size
         const progress = 1 - ring.frames / RING_FRAMES
-        const r = planet.size * scale + (motion ? 6 + progress * 12 : 8)
+        const r = size * scale + (motion ? 6 + progress * 12 : 8)
         ctx.globalAlpha = motion ? ring.frames / RING_FRAMES : 1
-        ctx.strokeStyle = planet.color
+        ctx.strokeStyle = target === 'sun' ? SUN_COLOR : planets[target].color
         ctx.lineWidth = 2
         ctx.beginPath()
-        ctx.arc(cx + bodies[ring.index].x, cy + bodies[ring.index].y, r, 0, Math.PI * 2)
+        ctx.arc(cx + body.x, cy + body.y, r, 0, Math.PI * 2)
         ctx.stroke()
         ctx.globalAlpha = 1
       }
@@ -274,12 +280,18 @@ function SolarSystem() {
       speed = 0
     }
 
-    // クリック（タップ）された位置に一番近い惑星を選ぶ
+    // クリック（タップ）された位置に一番近い惑星（または太陽）を選ぶ
     const onClick = (e: MouseEvent) => {
       const p = toLocal(e)
       const margin = coarseQuery.matches ? TAP_MARGIN : CLICK_MARGIN
-      let hit = -1
+      let hit: Target | null = null
       let best = Infinity
+      // 太陽は原点にあるので、原点からの距離で判定する
+      const sunDist = Math.hypot(p.x, p.y)
+      if (sunDist <= SUN_RADIUS * scale + margin) {
+        best = sunDist
+        hit = 'sun'
+      }
       for (let i = 0; i < planets.length; i++) {
         const dist = Math.hypot(p.x - bodies[i].x, p.y - bodies[i].y)
         if (dist <= planets[i].size * scale + margin && dist < best) {
@@ -287,7 +299,7 @@ function SolarSystem() {
           hit = i
         }
       }
-      if (hit !== -1) {
+      if (hit !== null) {
         setSelected(hit)
         highlight(hit)
       }
@@ -301,8 +313,8 @@ function SolarSystem() {
 
     const onThemeChange = () => requestFrame()
 
-    const highlight = (index: number) => {
-      ring = { index, frames: RING_FRAMES }
+    const highlight = (target: Target) => {
+      ring = { target, frames: RING_FRAMES }
       requestFrame()
     }
 
@@ -365,12 +377,12 @@ function SolarSystem() {
     if (reducedMotion) controlsRef.current?.resetToInitial()
   }, [reducedMotion])
 
-  const select = (index: number) => {
-    setSelected(index)
-    controlsRef.current?.highlight(index)
+  const select = (target: Target) => {
+    setSelected(target)
+    controlsRef.current?.highlight(target)
   }
 
-  const selectedPlanet = selected !== null ? planets[selected] : null
+  const selectedPlanet = selected !== null && selected !== 'sun' ? planets[selected] : null
 
   return (
     <section className="section solar" aria-labelledby="solar-title">
@@ -378,7 +390,7 @@ function SolarSystem() {
         Works
       </h2>
       <p className="solar-lead">
-        惑星ひとつが、作品ひとつ。作品が増えるたびに、太陽に近い惑星から色が灯っていきます。
+        真ん中の太陽が、わたし自身。惑星ひとつが、作品ひとつ。作品が増えるたびに、太陽に近い惑星から色が灯っていきます。
         惑星はカーソルから逃げるので、ゆっくり近づいてクリック（スマホはタップ）してみてください。
       </p>
 
@@ -400,36 +412,37 @@ function SolarSystem() {
 
       {/* 選択結果。aria-live でスクリーンリーダーに読み上げてもらう */}
       <div className="solar-message" aria-live="polite">
+        {selected === 'sun' && (
+          <p>
+            太陽：なましか <Link to="/about">自己紹介を見る</Link>
+          </p>
+        )}
         {selectedPlanet &&
-          (selectedPlanet.work && selectedPlanet.url ? (
+          (selectedPlanet.work ? (
             <p>
-              {selectedPlanet.name}：{selectedPlanet.work}{' '}
-              <a href={selectedPlanet.url} target="_blank" rel="noopener noreferrer">
-                作品ページを開く
-                <span className="sr-only">（新しいタブで開きます）</span>
-              </a>
+              {selectedPlanet.name}：{selectedPlanet.work.title}{' '}
+              <Link to={`/works/${selectedPlanet.work.slug}`}>探査ログを見る</Link>
             </p>
           ) : (
             <p>{selectedPlanet.name}：まだ未開拓の惑星です。次の作品を準備中</p>
           ))}
       </div>
 
-      <h3 className="solar-list-title">作品一覧</h3>
+      <h3 className="solar-list-title">太陽と惑星の一覧</h3>
       <ul className="solar-list">
+        <li>
+          <Link className="solar-item" to="/about">
+            <span className="solar-dot" style={{ background: SUN_COLOR }} aria-hidden="true" />
+            太陽｜なましか（自己紹介）
+          </Link>
+        </li>
         {planets.map((planet, i) => (
           <li key={planet.name}>
-            {planet.work && planet.url ? (
-              <a
-                className="solar-item"
-                href={planet.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => select(i)}
-              >
+            {planet.work ? (
+              <Link className="solar-item" to={`/works/${planet.work.slug}`}>
                 <span className="solar-dot" style={{ background: planet.color }} aria-hidden="true" />
-                {planet.name}｜{planet.work}
-                <span className="sr-only">（新しいタブで開きます）</span>
-              </a>
+                {planet.name}｜{planet.work.title}
+              </Link>
             ) : (
               <button type="button" className="solar-item solar-item-empty" onClick={() => select(i)}>
                 <span className="solar-dot" style={{ borderColor: planet.color }} aria-hidden="true" />

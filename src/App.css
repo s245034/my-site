@@ -5,15 +5,9 @@
   background: linear-gradient(180deg, var(--blue-light) 0%, var(--bg) 100%);
 }
 
-.hero-label {
-  color: var(--blue);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-}
-
 .hero-name {
   margin: 8px 0 16px;
-  font-size: 56px;
+  font-size: 40px;
   letter-spacing: 0.05em;
 }
 
