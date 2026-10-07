@@ -12,7 +12,9 @@
 - 8つの惑星が、それぞれ1つの作品を表します。作品がある惑星だけ色が灯り、まだない惑星は薄く表示されます
 - 作品が増えるたびに、太陽に近い惑星から順に埋まっていきます
 - 惑星はカーソルを速く動かすと逃げ、ゆっくり近づくと捕まえられます。クリック（スマホはタップ）で作品が表示されます
-- キャンバスの下には、すべての惑星を並べた普通の作品一覧があり、ここからも作品を開けます
+- 真ん中の太陽は作者自身です。クリックすると自己紹介ページ（`/about`）を開けます
+- 作品ごとに「探査ログ」として詳細ページ（`/works/:slug`）があり、作った目的・意識したこと・使った技術を載せています
+- キャンバスの下には、太陽とすべての惑星を並べた普通の一覧があり、ここからも各ページを開けます
 
 ### アクセシビリティ
 
@@ -29,6 +31,7 @@
 - [React](https://react.dev/) 19
 - [TypeScript](https://www.typescriptlang.org/)
 - [Vite](https://vite.dev/)
+- [React Router](https://reactrouter.com/) 7（Declarative Mode）
 - CSS（ライブラリなし）
 - Canvas API + `requestAnimationFrame`（アニメーション用のライブラリは使っていません）
 - [ESLint](https://eslint.org/) + [typescript-eslint](https://typescript-eslint.io/)
@@ -63,24 +66,35 @@ my-site/
 ├── public/            # そのまま配信される静的ファイル（favicon など）
 ├── src/
 │   ├── components/
-│   │   ├── SolarSystem.tsx   # 太陽系の本体（描画・動き・一時停止ボタン・作品一覧）
+│   │   ├── SolarSystem.tsx   # 太陽系の本体（描画・動き・一時停止ボタン・一覧）
 │   │   └── SolarSystem.css
 │   ├── data/
-│   │   └── planets.ts        # 惑星と作品のデータ
+│   │   ├── planets.ts        # 惑星のデータ（どの惑星にどの作品が入るか）
+│   │   └── works.ts          # 作品の詳細（探査ログに表示する内容）
 │   ├── hooks/
 │   │   └── usePrefersReducedMotion.ts  # 「動きを減らす」設定の判定
-│   ├── App.tsx        # ページ全体の構成（Hero・太陽系・フッター）
+│   ├── pages/
+│   │   ├── Home.tsx          # トップ（/）：Hero と太陽系
+│   │   ├── About.tsx         # 自己紹介（/about）
+│   │   ├── WorkDetail.tsx    # 作品の探査ログ（/works/:slug）
+│   │   ├── NotFound.tsx      # 404
+│   │   └── LogPage.css       # 自己紹介・探査ログ・404 の共通スタイル
+│   ├── App.tsx        # URL とページの対応表（ルーティング）と、全ページ共通のフッター
 │   ├── App.css        # ページのスタイル
 │   ├── index.css      # サイト全体の共通スタイル・色の設定（ダークモードを含む）
-│   └── main.tsx       # エントリーポイント
+│   └── main.tsx       # エントリーポイント（BrowserRouter で全体を囲む）
 ├── index.html
+├── vercel.json        # どの URL を直接開いても index.html を返す設定（404 対策）
 ├── vite.config.ts
 └── tsconfig*.json     # TypeScript の設定
 ```
 
 ## コンテンツの更新方法
 
-- **作品を追加する**：`src/data/planets.ts` で、作品がまだない惑星のうち太陽に一番近いものの `work`（作品名）と `url` を書き換える
+- **作品を追加する**：
+  1. `src/data/works.ts` に作品を追加する（`slug` が URL の `/works/〇〇` になる）
+  2. `src/data/planets.ts` で、作品がまだない惑星のうち太陽に一番近いものの `work` に、その作品を入れる
+- **自己紹介を変える**：`src/pages/About.tsx` を書き換える
 - **色を変える**：`src/index.css` の `:root` にある変数（`--blue` など）を変更する。ダークモードの色は、同じファイルの `@media (prefers-color-scheme: dark)` の中にある
 
 ## ブランチ運用
@@ -93,7 +107,7 @@ git flow に沿って運用しています。
 | `develop` | 開発中のものをまとめるブランチ |
 | `feature/*` | 機能ごとの作業用。`develop` から作り、PR で `develop` にマージする |
 
-`develop` から `main` へは PR でマージし、マージ後は `main` を `develop` に取り込んで揃えます（back-merge）。
+`develop` から `main` へは PR でマージします。作業を始めるときに `main` にしかない commit がないか確認し、あれば `develop` に取り込んで揃えます（back-merge）。
 
 ## デプロイ
 
